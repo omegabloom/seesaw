@@ -89,6 +89,8 @@ export interface Order {
   line_items: any[];
   shipping_address: any;
   billing_address: any;
+  shipping_latitude: number | null;
+  shipping_longitude: number | null;
   discount_codes: any[];
   note: string | null;
   tags: string[];

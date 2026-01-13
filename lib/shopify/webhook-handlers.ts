@@ -58,6 +58,8 @@ export async function processOrderWebhook(
     line_items: payload.line_items || [],
     shipping_address: payload.shipping_address,
     billing_address: payload.billing_address,
+    shipping_latitude: payload.shipping_address?.latitude || null,
+    shipping_longitude: payload.shipping_address?.longitude || null,
     discount_codes: payload.discount_codes || [],
     note: payload.note,
     tags: payload.tags ? payload.tags.split(", ").filter(Boolean) : [],

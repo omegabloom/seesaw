@@ -19,6 +19,9 @@ export function RealtimeIndicator() {
     }
   }, [lastEvent]);
 
+  // Only show when connected - hide offline state for cleaner TV display
+  if (!isConnected) return null;
+
   return (
     <div className="flex items-center gap-2">
       {showEvent && lastEvent && (
@@ -26,17 +29,9 @@ export function RealtimeIndicator() {
           {formatEventType(lastEvent.event_type)}
         </Badge>
       )}
-      <div
-        className={`flex items-center gap-1 text-xs ${
-          isConnected ? "text-green-500" : "text-muted-foreground"
-        }`}
-      >
-        {isConnected ? (
-          <Wifi className="h-3 w-3" />
-        ) : (
-          <WifiOff className="h-3 w-3" />
-        )}
-        <span>{isConnected ? "Live" : "Offline"}</span>
+      <div className="flex items-center gap-1 text-xs text-green-500">
+        <Wifi className="h-3 w-3" />
+        <span>Live</span>
       </div>
     </div>
   );

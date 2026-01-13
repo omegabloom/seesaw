@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DevSeeder } from "@/components/dev-seeder";
 
 interface Order {
   id: string;
@@ -39,10 +40,10 @@ export default function OrdersPage() {
     "order"
   );
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (silent = false) => {
     if (!currentShop) return;
 
-    setIsLoading(true);
+    if (!silent) setIsLoading(true);
     const supabase = createClient();
 
     const { data, error } = await supabase
@@ -58,7 +59,7 @@ export default function OrdersPage() {
       setOrders(data || []);
       setFilteredOrders(data || []);
     }
-    setIsLoading(false);
+    if (!silent) setIsLoading(false);
   };
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function OrdersPage() {
   // Refetch when new order events come in
   useEffect(() => {
     if (orderEvents.length > 0) {
-      fetchOrders();
+      fetchOrders(true); // Silent refetch
     }
   }, [orderEvents]);
 
@@ -105,11 +106,14 @@ export default function OrdersPage() {
             View and manage orders from {currentShop.shop_name || currentShop.shop_domain}
           </p>
         </div>
-        <Button variant="outline" onClick={fetchOrders} disabled={isLoading}>
+        <Button variant="outline" onClick={() => fetchOrders()} disabled={isLoading}>
           <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
           Refresh
         </Button>
       </div>
+
+      {/* Dev Seeder */}
+      <DevSeeder />
 
       {/* Search */}
       <div className="relative">

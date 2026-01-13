@@ -119,7 +119,7 @@ export default function ProductsPage() {
               Updated {lastUpdate.toLocaleTimeString()}
             </span>
           )}
-          <Button variant="outline" onClick={fetchProducts} disabled={isLoading}>
+          <Button variant="outline" onClick={() => fetchProducts()} disabled={isLoading}>
             <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
             Refresh
           </Button>

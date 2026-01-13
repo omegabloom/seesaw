@@ -122,6 +122,8 @@ CREATE TABLE IF NOT EXISTS orders (
   line_items JSONB DEFAULT '[]',
   shipping_address JSONB,
   billing_address JSONB,
+  shipping_latitude DECIMAL(10, 7),  -- Latitude from Shopify shipping address
+  shipping_longitude DECIMAL(10, 7), -- Longitude from Shopify shipping address
   discount_codes JSONB DEFAULT '[]',
   note TEXT,
   tags TEXT[],

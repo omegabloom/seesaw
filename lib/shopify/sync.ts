@@ -357,6 +357,8 @@ async function syncOrders(
             line_items: order.line_items || [],
             shipping_address: order.shipping_address,
             billing_address: order.billing_address,
+            shipping_latitude: order.shipping_address?.latitude || null,
+            shipping_longitude: order.shipping_address?.longitude || null,
             discount_codes: order.discount_codes || [],
             note: order.note,
             tags: order.tags ? order.tags.split(", ").filter(Boolean) : [],

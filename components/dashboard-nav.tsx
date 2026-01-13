@@ -11,6 +11,8 @@ import {
   Boxes,
   Settings,
   Activity,
+  Droplet,
+  TrendingUp,
 } from "lucide-react";
 
 const navigation = [
@@ -20,6 +22,8 @@ const navigation = [
   { name: "Customers", href: "/dashboard/customers", icon: Users },
   { name: "Inventory", href: "/dashboard/inventory", icon: Boxes },
   { name: "Activity", href: "/dashboard/activity", icon: Activity },
+  { name: "Drip", href: "/dashboard/drip", icon: Droplet },
+  { name: "Rise", href: "/dashboard/rise", icon: TrendingUp },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
