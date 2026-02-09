@@ -1449,7 +1449,7 @@ export function BubblesCanvas({ onClose }: BubblesCanvasProps) {
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 bg-black overflow-hidden">
+    <div ref={containerRef} className="fixed inset-0 z-[100] bg-black overflow-hidden">
       <canvas ref={canvasRef} className="w-full h-full" />
 
       {/* Intro overlay */}
@@ -1478,6 +1478,15 @@ export function BubblesCanvas({ onClose }: BubblesCanvasProps) {
       >
         <X className="h-6 w-6" />
       </button>
+
+      {/* Status indicator - top right */}
+      <div className="absolute top-4 right-16 z-10 flex items-center gap-2 bg-black px-3 py-2 rounded-lg border border-white/20">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+        </span>
+        <span className="text-white text-sm font-medium">Bubbles — last {introOrderCount} orders</span>
+      </div>
     </div>
   );
 }

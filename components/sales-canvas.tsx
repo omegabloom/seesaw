@@ -646,14 +646,14 @@ export function SalesCanvas({ onClose }: SalesCanvasProps) {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
         <div className="text-white text-2xl animate-pulse">Loading sales...</div>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 bg-black">
+    <div ref={containerRef} className="fixed inset-0 z-[100] bg-black">
       {/* Celebration overlay */}
       {celebration && (
         <OrderCelebration
@@ -669,37 +669,6 @@ export function SalesCanvas({ onClose }: SalesCanvasProps) {
         <source src="/sounds/cha-ching.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Controls overlay */}
-      <div className="absolute top-4 right-16 z-10 flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white/70 hover:text-white hover:bg-white/10"
-          onClick={() => setIsCompact(!isCompact)}
-          title={isCompact ? "TV Mode (C)" : "Compact Mode (C)"}
-        >
-          {isCompact ? <Monitor className="h-5 w-5" /> : <Smartphone className="h-5 w-5" />}
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white/70 hover:text-white hover:bg-white/10"
-          onClick={() => setIsMuted(!isMuted)}
-          title={isMuted ? "Unmute (M)" : "Mute (M)"}
-        >
-          {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white/70 hover:text-white hover:bg-white/10"
-          onClick={() => setIsPaused(!isPaused)}
-          title={isPaused ? "Play (Space)" : "Pause (Space)"}
-        >
-          {isPaused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
-        </Button>
-      </div>
-
       {/* Close button - standalone for visibility */}
       <button
         onClick={onClose}
@@ -709,13 +678,13 @@ export function SalesCanvas({ onClose }: SalesCanvasProps) {
         <X className="h-6 w-6" />
       </button>
 
-      {/* Status indicator - top left */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/40 px-3 py-2 rounded-lg">
+      {/* Status indicator - top right */}
+      <div className="absolute top-4 right-16 z-50 flex items-center gap-2 bg-black px-3 py-2 rounded-lg border border-white/20">
         <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
         </span>
-        <span className="text-white/70 text-sm">Live — last {ordersToShow} orders</span>
+        <span className="text-white text-sm font-medium">Live — last {ordersToShow} orders</span>
       </div>
 
       {/* Keyboard hints */}

@@ -46,7 +46,7 @@ export default function Home() {
             See what you sold.
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
-            The Shopify app that turns your orders into a visual feed.
+            The Live TV Dashboard that turns your orders into a visual feed.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-200 mb-10">
             <span className="flex items-center gap-2 drop-shadow-md">
@@ -59,7 +59,7 @@ export default function Home() {
             </span>
             <span className="flex items-center gap-2 drop-shadow-md">
               <Check className="h-5 w-5 text-orange-400" />
-              Just instant clarity
+              See what sold
             </span>
           </div>
           <Link
@@ -199,15 +199,10 @@ export default function Home() {
               <span className="text-5xl font-bold">$10</span>
               <span className="text-gray-500">/month</span>
             </div>
-            <div className="text-gray-600 space-y-2 mb-8">
-              <p>Includes 1,000 orders</p>
-              <p>$0.005 per order after</p>
-              <p className="text-sm text-gray-500">High volume? We offer discounted rates.</p>
-            </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500 mb-8">
               <span>✓ No tiers</span>
               <span>✓ No surprises</span>
-              <span>✓ Pay more only if you grow</span>
+              <span>✓ One low monthly cost</span>
             </div>
             <Link
               href="/auth/sign-up"
@@ -247,7 +242,10 @@ export default function Home() {
       <footer className="py-12 px-6 bg-gray-900 text-gray-400">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <Image src="/seesaw_icon.png" alt="Seesaw" width={32} height={32} className="h-8 w-auto" />
-          <p className="text-sm">© 2026 Seesaw. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="text-sm hover:text-white transition-colors">Privacy Policy</Link>
+            <p className="text-sm">© 2026 Seesaw. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </main>

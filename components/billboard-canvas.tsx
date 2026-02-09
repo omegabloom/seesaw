@@ -298,7 +298,7 @@ export function BillboardCanvas({ onClose }: BillboardCanvasProps) {
   // Loading state
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="text-white text-2xl animate-pulse mb-2">Loading Billboard...</div>
           <div className="text-white/40 text-sm">Computing weekly rankings</div>
@@ -310,7 +310,7 @@ export function BillboardCanvas({ onClose }: BillboardCanvasProps) {
   // Empty state
   if (rows.length === 0) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-50 p-2 rounded-lg bg-black/30 text-white/50 hover:text-white/80 hover:bg-black/50 transition-all"
@@ -327,38 +327,7 @@ export function BillboardCanvas({ onClose }: BillboardCanvasProps) {
   }
   
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 bg-black overflow-hidden">
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black via-black/95 to-transparent pb-8 pt-4 px-8">
-        <div className="flex items-center justify-between">
-          {/* Title */}
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-white tracking-tight">BILLBOARD</h1>
-              <span className="text-lg text-white/40">·</span>
-              <span className="text-lg text-white/60">THIS WEEK</span>
-            </div>
-            <p className="text-sm text-white/30 mt-1">Based on orders · Rolling 7 days</p>
-          </div>
-          
-          {/* Status */}
-          <div className="flex items-center gap-4">
-            {isPaused && (
-              <div className="px-3 py-1 rounded bg-amber-500/20 border border-amber-500/40">
-                <span className="text-sm font-medium text-amber-400">Paused</span>
-              </div>
-            )}
-            <div className="flex items-center gap-2 bg-black/40 px-3 py-2 rounded-lg">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-              </span>
-              <span className="text-white/70 text-sm">Top {rows.length} products</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+    <div ref={containerRef} className="fixed inset-0 z-[100] bg-black overflow-hidden">
       {/* Close button */}
       <button
         onClick={onClose}
@@ -367,10 +336,29 @@ export function BillboardCanvas({ onClose }: BillboardCanvasProps) {
       >
         <X className="h-6 w-6" />
       </button>
+
+      {/* Status indicator - top right */}
+      <div className="absolute top-4 right-16 z-30 flex items-center gap-2 bg-black px-3 py-2 rounded-lg border border-white/20">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+        <span className="text-white text-sm font-medium">Billboard — top {rows.length} products</span>
+      </div>
+
+      {/* Header */}
+      <div className="absolute top-16 left-0 right-0 z-20 bg-gradient-to-b from-black via-black/95 to-transparent pb-8 pt-4 px-8">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-white tracking-tight">BILLBOARD</h1>
+          <span className="text-lg text-white/40">·</span>
+          <span className="text-lg text-white/60">THIS WEEK</span>
+        </div>
+        <p className="text-sm text-white/30 mt-1">Based on orders · Rolling 7 days</p>
+      </div>
       
       {/* Scrolling content */}
       <div 
-        className="absolute left-0 right-0 top-[100px]"
+        className="absolute left-0 right-0 top-[140px]"
         style={{
           transform: `translateY(-${scrollOffset}px)`,
           transition: isZippingBack ? `transform ${ZIP_BACK_DURATION_MS}ms ease-out` : 'none',

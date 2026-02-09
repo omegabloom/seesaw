@@ -483,14 +483,6 @@ function StatsOverlay({
 
       {/* Bottom Right - Stats */}
       <div className="absolute bottom-8 right-8 z-10 text-right">
-        <div className="text-white text-xs uppercase tracking-wider mb-4 underline">
-          Last {ordersToShow} Orders
-          {isPlayingBack && (
-            <span className="ml-2 text-green-400 animate-pulse">
-              (Replaying...)
-            </span>
-          )}
-        </div>
         <div className="flex flex-col gap-4">
           <div>
             <div className="text-white/50 text-sm uppercase tracking-wider mb-2">
@@ -814,14 +806,14 @@ export function GlobeCanvas({ onClose }: GlobeCanvasProps) {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
         <div className="text-white text-2xl animate-pulse">Loading globe...</div>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
+    <div className="fixed inset-0 z-[100] bg-black">
       {/* Three.js Canvas */}
       <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
         <ambientLight intensity={1.5} />
@@ -855,6 +847,15 @@ export function GlobeCanvas({ onClose }: GlobeCanvasProps) {
       >
         <X className="h-6 w-6" />
       </button>
+
+      {/* Status indicator - top right */}
+      <div className="absolute top-4 right-16 z-10 flex items-center gap-2 bg-black px-3 py-2 rounded-lg border border-white/20">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+        </span>
+        <span className="text-white text-sm font-medium">Globe — last {ordersToShow} orders</span>
+      </div>
     </div>
   );
 }

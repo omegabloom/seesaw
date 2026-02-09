@@ -350,7 +350,7 @@ export function RiseCanvas({ onClose }: RiseCanvasProps) {
   }, [onClose, currentIndex, products.length, goToProduct]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-black overflow-hidden">
       {/* Main Content - Horizontal Stack */}
       <div
         ref={containerRef}
@@ -416,13 +416,13 @@ export function RiseCanvas({ onClose }: RiseCanvasProps) {
       </button>
 
       {/* Status indicator - top right */}
-      <div className="absolute top-4 right-16 z-10 flex items-center gap-2 bg-black/40 px-3 py-2 rounded-lg">
+      <div className="absolute top-4 right-16 z-10 flex items-center gap-2 bg-black px-3 py-2 rounded-lg border border-white/20">
         <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
         </span>
-        <span className="text-white/70 text-sm">
-          {isLoading ? 'Loading...' : `Live — last ${ordersToAnalyze} orders`}
+        <span className="text-white text-sm font-medium">
+          {isLoading ? 'Loading...' : `Top products — last ${ordersToAnalyze} orders`}
         </span>
       </div>
     </div>

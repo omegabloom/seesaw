@@ -1,24 +1,33 @@
 "use client";
 
 import { useShop } from "@/lib/context/shop-context";
+import { useViewMode } from "@/lib/context/view-mode-context";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowRight, Waves, Globe, TrendingUp, X, Circle, Play, Square, BarChart3, CircleDot } from "lucide-react";
+import { ArrowRight, Waves, Globe, TrendingUp, X, Circle, Play, Square, CircleDot, Clock } from "lucide-react";
 import Link from "next/link";
 import { SalesCanvas } from "@/components/sales-canvas";
 import { GlobeCanvas } from "@/components/globe-canvas";
 import { RiseCanvas } from "@/components/rise-canvas";
 import { BubblesCanvas } from "@/components/bubbles-canvas";
-import { BillboardCanvas } from "@/components/billboard-canvas";
+import { SlowMoversCanvas } from "@/components/slowmovers-canvas";
 import { getViewLoopConfig, ViewId, ViewLoopConfig } from "./settings/page";
 
 export default function DashboardPage() {
   const { currentShop, shops, isLoading: shopsLoading } = useShop();
+  const { setIsViewOpen } = useViewMode();
   const [showStreamCanvas, setShowStreamCanvas] = useState(false);
   const [showGlobeCanvas, setShowGlobeCanvas] = useState(false);
   const [showRiseCanvas, setShowRiseCanvas] = useState(false);
   const [showBubblesCanvas, setShowBubblesCanvas] = useState(false);
-  const [showBillboardCanvas, setShowBillboardCanvas] = useState(false);
+  const [showSlowMoversCanvas, setShowSlowMoversCanvas] = useState(false);
   const [showPaleBlueDot, setShowPaleBlueDot] = useState(false);
+  
+  // Track when any view is open and update context
+  const anyViewOpen = showStreamCanvas || showGlobeCanvas || showRiseCanvas || showBubblesCanvas || showSlowMoversCanvas || showPaleBlueDot;
+  
+  useEffect(() => {
+    setIsViewOpen(anyViewOpen);
+  }, [anyViewOpen, setIsViewOpen]);
   
   // Loop mode state
   const [isLooping, setIsLooping] = useState(false);
@@ -40,7 +49,7 @@ export default function DashboardPage() {
     setShowGlobeCanvas(viewId === "globe");
     setShowRiseCanvas(viewId === "rise");
     setShowBubblesCanvas(viewId === "bubbles");
-    setShowBillboardCanvas(viewId === "billboard");
+    setShowSlowMoversCanvas(viewId === "slowmovers");
     setCurrentLoopView(viewId);
   }, []);
 
@@ -50,7 +59,7 @@ export default function DashboardPage() {
     setShowGlobeCanvas(false);
     setShowRiseCanvas(false);
     setShowBubblesCanvas(false);
-    setShowBillboardCanvas(false);
+    setShowSlowMoversCanvas(false);
     setCurrentLoopView(null);
   }, []);
 
@@ -98,7 +107,6 @@ export default function DashboardPage() {
   const handleViewClose = useCallback(() => {
     if (isLooping) {
       // Double-tap escape detection for loop mode
-      const now = Date.now();
       if (escTimeoutRef.current) {
         clearTimeout(escTimeoutRef.current);
       }
@@ -154,7 +162,7 @@ export default function DashboardPage() {
 
   if (shopsLoading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
         <div className="text-white/60 text-lg">Loading...</div>
       </div>
     );
@@ -162,7 +170,7 @@ export default function DashboardPage() {
 
   if (shops.length === 0) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center justify-center gap-6">
+      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center gap-6">
         <h2 className="text-3xl font-light text-white">Welcome to Seesaw</h2>
         <p className="text-white/60 text-center max-w-md">
           Connect your first Shopify store to start visualizing your sales in real-time.
@@ -180,7 +188,7 @@ export default function DashboardPage() {
 
   if (!currentShop) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
         <div className="text-white/60 text-lg">Select a store from the dropdown above.</div>
       </div>
     );
@@ -188,15 +196,7 @@ export default function DashboardPage() {
 
   // Main dashboard with view buttons
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center justify-center gap-10 overflow-hidden">
-      {/* Store name and tagline */}
-      <div className="text-center">
-        <h1 className="text-4xl font-light text-white mb-2">
-          {currentShop.shop_name || currentShop.shop_domain}
-        </h1>
-        <p className="text-white/40 text-lg">Real-time sales visualizations</p>
-      </div>
-
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center gap-10 overflow-hidden">
       {/* Loop Control */}
       <div className="flex flex-col items-center gap-4">
         <button
@@ -233,11 +233,11 @@ export default function DashboardPage() {
         {/* Stream Button */}
         <button
           onClick={() => setShowStreamCanvas(true)}
-          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300"
+          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-white/10 hover:border-orange-500/40 hover:from-orange-500/20 hover:to-amber-500/20 transition-all duration-300"
         >
-          <Waves className="h-12 w-12 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          <Waves className="h-12 w-12 text-white/70 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
           <div className="text-center">
-            <span className="text-lg font-light text-white/70 group-hover:text-white transition-colors block">
+            <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors block">
               Stream
             </span>
             <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
@@ -249,11 +249,11 @@ export default function DashboardPage() {
         {/* Rise Button */}
         <button
           onClick={() => setShowRiseCanvas(true)}
-          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300"
+          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-white/10 hover:border-orange-500/40 hover:from-orange-500/20 hover:to-amber-500/20 transition-all duration-300"
         >
-          <TrendingUp className="h-12 w-12 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          <TrendingUp className="h-12 w-12 text-white/70 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
           <div className="text-center">
-            <span className="text-lg font-light text-white/70 group-hover:text-white transition-colors block">
+            <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors block">
               Rise
             </span>
             <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
@@ -265,11 +265,11 @@ export default function DashboardPage() {
         {/* Globe Button */}
         <button
           onClick={() => setShowGlobeCanvas(true)}
-          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300"
+          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-white/10 hover:border-orange-500/40 hover:from-orange-500/20 hover:to-amber-500/20 transition-all duration-300"
         >
-          <Globe className="h-12 w-12 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          <Globe className="h-12 w-12 text-white/70 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
           <div className="text-center">
-            <span className="text-lg font-light text-white/70 group-hover:text-white transition-colors block">
+            <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors block">
               Globe
             </span>
             <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
@@ -281,11 +281,11 @@ export default function DashboardPage() {
         {/* Bubbles Button */}
         <button
           onClick={() => setShowBubblesCanvas(true)}
-          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300"
+          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-white/10 hover:border-orange-500/40 hover:from-orange-500/20 hover:to-amber-500/20 transition-all duration-300"
         >
-          <CircleDot className="h-12 w-12 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          <CircleDot className="h-12 w-12 text-white/70 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
           <div className="text-center">
-            <span className="text-lg font-light text-white/70 group-hover:text-white transition-colors block">
+            <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors block">
               Bubbles
             </span>
             <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
@@ -294,18 +294,18 @@ export default function DashboardPage() {
           </div>
         </button>
 
-        {/* Billboard Button */}
+        {/* Slow Movers Button */}
         <button
-          onClick={() => setShowBillboardCanvas(true)}
-          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300"
+          onClick={() => setShowSlowMoversCanvas(true)}
+          className="group flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-white/10 hover:border-orange-500/40 hover:from-orange-500/20 hover:to-amber-500/20 transition-all duration-300"
         >
-          <BarChart3 className="h-12 w-12 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          <Clock className="h-12 w-12 text-white/70 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
           <div className="text-center">
-            <span className="text-lg font-light text-white/70 group-hover:text-white transition-colors block">
-              Billboard
+            <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors block">
+              Slow Movers
             </span>
             <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
-              Weekly chart
+              Backlog
             </span>
           </div>
         </button>
@@ -339,15 +339,15 @@ export default function DashboardPage() {
         <BubblesCanvas onClose={handleViewClose} />
       )}
 
-      {/* Billboard Canvas Overlay */}
-      {showBillboardCanvas && (
-        <BillboardCanvas onClose={handleViewClose} />
+      {/* Slow Movers Canvas Overlay */}
+      {showSlowMoversCanvas && (
+        <SlowMoversCanvas onClose={handleViewClose} />
       )}
 
       {/* Pale Blue Dot Video Modal */}
       {showPaleBlueDot && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center"
           onClick={() => setShowPaleBlueDot(false)}
         >
           <button

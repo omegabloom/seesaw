@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Seesaw - Shopify Dashboard",
   description: "Real-time Shopify data dashboard with multi-store support",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 const geistSans = Geist({

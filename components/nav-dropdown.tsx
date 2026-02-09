@@ -6,14 +6,7 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import {
   LayoutDashboard,
-  ShoppingBag,
-  Package,
-  Users,
-  Boxes,
   Settings,
-  Activity,
-  Droplet,
-  TrendingUp,
   Menu,
   LogOut,
 } from "lucide-react";
@@ -27,14 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const navigation = [
-  { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Orders", href: "/dashboard/orders", icon: ShoppingBag },
-  { name: "Products", href: "/dashboard/products", icon: Package },
-  { name: "Customers", href: "/dashboard/customers", icon: Users },
-  { name: "Inventory", href: "/dashboard/inventory", icon: Boxes },
-  { name: "Activity", href: "/dashboard/activity", icon: Activity },
-  { name: "Drip", href: "/dashboard/drip", icon: Droplet },
-  { name: "Rise", href: "/dashboard/rise", icon: TrendingUp },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
@@ -87,7 +73,7 @@ export function NavDropdown() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={handleLogout}
-          className="flex items-center gap-3 text-red-500 focus:text-red-500"
+          className="flex items-center gap-3"
         >
           <LogOut className="h-4 w-4" />
           Logout
