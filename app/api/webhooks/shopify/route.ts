@@ -1,49 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getShopByDomain, markShopUninstalled } from "@/lib/shopify/session";
+import { verifyShopifyHmac } from "@/lib/shopify/verify-hmac";
 import {
   processOrderWebhook,
   processProductWebhook,
   processCustomerWebhook,
   processInventoryWebhook,
 } from "@/lib/shopify/webhook-handlers";
-
-/**
- * Validate Shopify webhook HMAC
- * Shopify signs the raw request body with the app's API secret.
- * We must compute the HMAC over the exact raw bytes (not a decoded string).
- */
-function validateHmac(rawBody: Buffer, hmac: string | null): boolean {
-  if (!hmac) {
-    console.error("[Webhook] Missing HMAC header");
-    return false;
-  }
-
-  if (!process.env.SHOPIFY_API_SECRET) {
-    console.error("[Webhook] Missing SHOPIFY_API_SECRET env var");
-    return false;
-  }
-
-  const generatedHmac = crypto
-    .createHmac("sha256", process.env.SHOPIFY_API_SECRET)
-    .update(rawBody)
-    .digest("base64");
-
-  try {
-    const receivedBuf = Buffer.from(hmac, "base64");
-    const generatedBuf = Buffer.from(generatedHmac, "base64");
-
-    if (receivedBuf.length !== generatedBuf.length) {
-      return false;
-    }
-
-    return crypto.timingSafeEqual(receivedBuf, generatedBuf);
-  } catch (err) {
-    console.error("[Webhook] HMAC comparison error:", err);
-    return false;
-  }
-}
 
 export async function POST(request: NextRequest) {
   // Read raw body as Buffer to ensure exact bytes for HMAC verification
@@ -57,7 +21,7 @@ export async function POST(request: NextRequest) {
   console.log(`[Webhook] Received: ${topic} from ${shopDomain}`);
 
   // Validate HMAC — reject if signature is missing or invalid
-  if (!validateHmac(rawBodyBuffer, hmac)) {
+  if (!verifyShopifyHmac(rawBodyBuffer, hmac)) {
     console.error("[Webhook] Invalid HMAC - rejecting");
     return new NextResponse("Unauthorized", { status: 401 });
   }
