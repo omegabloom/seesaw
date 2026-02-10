@@ -3,6 +3,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
 
 export async function updateSession(request: NextRequest) {
+  // Skip proxy entirely for webhook endpoints — they use HMAC auth, not cookies.
+  // This must be the FIRST check to avoid any interference with webhook requests.
+  if (request.nextUrl.pathname.startsWith("/api/webhooks")) {
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
