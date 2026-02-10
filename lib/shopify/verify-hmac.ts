@@ -25,16 +25,13 @@ export function verifyShopifyHmac(
     .update(rawBody)
     .digest("base64");
 
-  try {
-    const receivedBuf = Buffer.from(hmacHeader, "base64");
-    const generatedBuf = Buffer.from(generatedHmac, "base64");
+  // Compare base64 strings directly using timing-safe comparison
+  const a = Buffer.from(hmacHeader, "utf8");
+  const b = Buffer.from(generatedHmac, "utf8");
 
-    if (receivedBuf.length !== generatedBuf.length) {
-      return false;
-    }
-
-    return crypto.timingSafeEqual(receivedBuf, generatedBuf);
-  } catch {
+  if (a.length !== b.length) {
     return false;
   }
+
+  return crypto.timingSafeEqual(a, b);
 }
