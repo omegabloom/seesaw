@@ -3,9 +3,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
 
 export async function updateSession(request: NextRequest) {
-  // Skip proxy entirely for webhook endpoints — they use HMAC auth, not cookies.
-  // This must be the FIRST check to avoid any interference with webhook requests.
-  if (request.nextUrl.pathname.startsWith("/api/webhooks")) {
+  // Skip proxy entirely for webhook and cron endpoints — they use their own auth.
+  // This must be the FIRST check to avoid any interference with these requests.
+  if (
+    request.nextUrl.pathname.startsWith("/api/webhooks") ||
+    request.nextUrl.pathname.startsWith("/api/cron")
+  ) {
     return NextResponse.next();
   }
 
