@@ -13,6 +13,6 @@ redirect_urls = [ "https://seesawlive.com/api/auth/shopify/callback" ]
 api_version = "2024-10"
 
   [webhooks.privacy_compliance]
-  customer_data_request_url = "https://seesawlive.com/api/webhooks/shopify/customers-data-request"
-  customer_deletion_url = "https://seesawlive.com/api/webhooks/shopify/customers-redact"
-  shop_deletion_url = "https://seesawlive.com/api/webhooks/shopify/shop-redact"
+  customer_data_request_url = "https://www.seesawlive.com/api/webhooks/shopify/customers-data-request"
+  customer_deletion_url = "https://www.seesawlive.com/api/webhooks/shopify/customers-redact"
+  shop_deletion_url = "https://www.seesawlive.com/api/webhooks/shopify/shop-redact"
